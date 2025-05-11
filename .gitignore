@@ -11,3 +11,4 @@ docs/en/book/*
 /playwright/.cache/
 .env
 .vscode
+__pycache__/
