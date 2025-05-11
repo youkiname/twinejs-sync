@@ -12,3 +12,5 @@ docs/en/book/*
 .env
 .vscode
 __pycache__/
+/server/stories.json
+/server/passages.json

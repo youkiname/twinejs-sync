@@ -136,6 +136,6 @@
 		"test": "jest --watch",
 		"test:coverage": "jest --coverage"
 	},
-	"homepage": "./",
+	"homepage": "/twinejs/",
 	"main": "electron-build/electron/src/electron/main-process/index.js"
 }
