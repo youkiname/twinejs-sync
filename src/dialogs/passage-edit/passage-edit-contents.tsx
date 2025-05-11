@@ -65,6 +65,8 @@ export const PassageEditContents: React.FC<
 		[dispatch, passage, story]
 	);
 
+	console.log('render ', passage.name)
+
 	function handleExecCommand(name: string) {
 		// A format toolbar command probably will affect the editor content. It
 		// appears that react-codemirror2 can't maintain the selection properly in

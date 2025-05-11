@@ -8,6 +8,7 @@ import {StoryFormat} from '../../store/story-formats';
 import {useCodeMirrorPassageHints} from '../../store/use-codemirror-passage-hints';
 import {useFormatCodeMirrorMode} from '../../store/use-format-codemirror-mode';
 import {codeMirrorOptionsFromPrefs} from '../../util/codemirror-options';
+import { useServerTextSync } from '../../store/persistence/server-storage/passages/real-time-text-sync';
 
 export interface PassageTextProps {
 	disabled?: boolean;
@@ -161,6 +162,14 @@ export const PassageText: React.FC<PassageTextProps> = props => {
 			t
 		]
 	);
+
+	const clearTextSync = useServerTextSync(passage.id, (newText: string) => {
+		onChangeTimeout.current = 1
+		setLocalText(newText)
+	})
+	// on unmount
+	React.useEffect( () => () => clearTextSync(), []);
+
 
 	return (
 		<DialogEditor ref={codeAreaContainerRef}>

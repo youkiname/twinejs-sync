@@ -5,6 +5,7 @@ import {isElectronRenderer} from '../../util/is-electron';
 import {StoriesAction, StoriesState} from '../stories';
 import {StoryFormatsAction, StoryFormatsState} from '../story-formats';
 import {PrefsAction, PrefsState} from '../prefs';
+import { useServerStoragePersistence } from './server-storage/use-server-storage-persistence';
 
 export interface PersistenceHooks {
 	prefs: {
@@ -31,10 +32,17 @@ export interface PersistenceHooks {
 export function usePersistence(): PersistenceHooks {
 	const electronIpcPersistence = useElectronIpcPersistence();
 	const localStoragePersistence = useLocalStoragePersistence();
+	const serverStoragePersistence = useServerStoragePersistence();
 
+	let selectedPersistence: any = localStoragePersistence
+	if (isElectronRenderer()) {
+		selectedPersistence = electronIpcPersistence
+	}
+	if (import.meta.env.VITE_USE_SERVER_SYNC) {
+		selectedPersistence = serverStoragePersistence
+	}
 	return React.useMemo(
-		() =>
-			isElectronRenderer() ? electronIpcPersistence : localStoragePersistence,
-		[electronIpcPersistence, localStoragePersistence]
+		() => selectedPersistence,
+		[electronIpcPersistence, localStoragePersistence, serverStoragePersistence]
 	);
 }
